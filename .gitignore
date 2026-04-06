@@ -34,6 +34,7 @@ ENV/
 # Large Files and Data
 Dataset/
 *.pth
+!best_model.pth
 *.h5
 *.weights
 *.pkl
