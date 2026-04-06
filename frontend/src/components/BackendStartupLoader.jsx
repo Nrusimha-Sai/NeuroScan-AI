@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Brain, Wifi, WifiOff, Clock, RefreshCw, CheckCircle2 } from 'lucide-react'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_BASE = import.meta.env.VITE_API_URL
 const POLL_INTERVAL  = 4000   // ms between polls
 const FAST_INTERVAL  = 2000   // ms when getting close
 const TIMEOUT_MS     = 180000 // 3 min max wait
@@ -142,7 +142,7 @@ export default function BackendStartupLoader({ onReady }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[999] bg-brand-900 flex flex-col items-center justify-center particle-bg grid-overlay overflow-hidden">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-brand-900/95 backdrop-blur-xl particle-bg overflow-hidden">
       {/* Top gradient */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent" />
 

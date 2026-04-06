@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Brain, GitBranch, Globe, AtSign, Mail, Heart, ExternalLink } from 'lucide-react'
 
+const API_BASE = import.meta.env.VITE_API_URL
+
 const footerLinks = {
   Product: [
     { label: 'Analyze MRI',   to: '/analyze' },
     { label: 'How It Works',  to: '/how-it-works' },
-    { label: 'API Docs',      to: 'http://localhost:8000/docs', external: true },
+    { label: 'API Docs',      to: `${API_BASE}/docs`, external: true },
   ],
   Company: [
     { label: 'About Us',   to: '/about' },
@@ -17,7 +19,7 @@ const footerLinks = {
   Technology: [
     { label: 'DenseNet121',       to: 'https://arxiv.org/abs/1608.06993', external: true },
     { label: 'Grad-CAM Paper',    to: 'https://arxiv.org/abs/1610.02391', external: true },
-    { label: 'FastAPI Backend',   to: 'http://localhost:8000/docs', external: true },
+    { label: 'FastAPI Backend',   to: `${API_BASE}/docs`, external: true },
   ],
 }
 
@@ -39,9 +41,9 @@ const itemVariants = {
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/08 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-800/50 pointer-events-none" />
+    <footer className="relative border-t border-white/08 overflow-hidden bg-[#05050f] z-10">
+      {/* Background gradient for subtle texture on top of solid background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-800/80 pointer-events-none" />
       <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

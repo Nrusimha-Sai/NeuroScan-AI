@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertCircle, Brain } from 'lucide-react'
 import LoadingAnimation from '../components/LoadingAnimation'
+import ParticleBackground from '../components/ParticleBackground'
 import ResultCard from '../components/ResultCard'
 import { SkeletonResultLayout } from '../components/Skeleton'
 import UploadZone from '../components/UploadZone'
@@ -10,7 +11,8 @@ export default function AnalyzePage() {
   const { loading, result, error, predict, reset } = usePrediction()
 
   return (
-    <div className="relative min-h-screen pt-24 pb-20 particle-bg grid-overlay">
+    <div className="relative min-h-screen pt-24 pb-20 particle-bg">
+      <ParticleBackground />
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page header */}
         <motion.div

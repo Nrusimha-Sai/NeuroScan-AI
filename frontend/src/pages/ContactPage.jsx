@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, MessageSquare, MapPin, Send, CheckCircle2, AlertCircle, GitBranch, Globe, AtSign } from 'lucide-react'
 
 const contactInfo = [
-  { icon: Mail,        label: 'Email',    value: 'hello@neuroscan.ai',    href: 'mailto:hello@neuroscan.ai' },
-  { icon: GitBranch,  label: 'GitHub',   value: 'github.com/neuroscan',  href: 'https://github.com' },
+  { icon: Mail,        label: 'Email',    value: 'gmail',    href: 'mailto:saimahesh200505@gmail.com' },
+  { icon: GitBranch,  label: 'GitHub',   value: 'github.com/neuroscan',  href: 'https://github.com/Nrusimha-Sai/NeuroScan-AI' },
   { icon: Globe,       label: 'Twitter',   value: '@neuroscan_ai',          href: 'https://twitter.com' },
-  { icon: AtSign,      label: 'LinkedIn', value: 'linkedin.com/neuroscan', href: 'https://linkedin.com' },
+  { icon: AtSign,      label: 'LinkedIn', value: 'linkedin.com', href: 'https://linkedin.com' },
 ]
 
 const faqs = [

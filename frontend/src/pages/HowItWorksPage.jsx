@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Upload, Cpu, Flame, BarChart2, ChevronRight } from 'lucide-react'
+import ParticleBackground from '../components/ParticleBackground'
 
 const steps = [
   {
@@ -51,8 +52,9 @@ const item = {
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen pt-28 pb-20 particle-bg">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen pt-28 pb-20 particle-bg">
+      <ParticleBackground />
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
           <h1 className="font-display font-bold text-5xl text-white mb-4">
