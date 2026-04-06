@@ -1,0 +1,64 @@
+# Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+frontend/node_modules/
+frontend/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+
+# Large Files and Data
+Dataset/
+*.pth
+*.h5
+*.weights
+*.pkl
+*.out
+*.log
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+
+# IDES / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Misc
+gradcam_output.jpg
+VR_RUN1_5135_*.slurm
+slurm-*.out
