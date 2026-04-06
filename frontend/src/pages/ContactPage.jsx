@@ -66,7 +66,8 @@ export default function ContactPage() {
       const payload = {
         ...form,
         access_key: "bbdd45f3-539d-4927-a2ed-8a8a5e88c459",
-        from_name: "NeuroScan AI Contact Form"
+        from_name: "NeuroScan AI Contact Form",
+        autoresponse: `Hi ${form.name},\n\nThank you for reaching out to us. We have received your message regarding "${form.subject}" and will get back to you as soon as possible.\n\nHere is a copy of your message:\n--------------------------------------------------\n${form.message}\n--------------------------------------------------\n\nBest regards,\nThe NeuroScan AI Team`
       };
 
       const response = await fetch("https://api.web3forms.com/submit", {
