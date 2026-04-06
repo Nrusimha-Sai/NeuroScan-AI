@@ -61,10 +61,25 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('sending')
-    // Simulate form send (replace with real API call / emailjs)
-    await new Promise((r) => setTimeout(r, 1500))
-    setStatus('success')
-    setForm({ name: '', email: '', subject: '', message: '' })
+    
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form)
+      });
+      
+      if (!response.ok) throw new Error('Failed to send');
+      
+      setStatus('success')
+      setForm({ name: '', email: '', subject: '', message: '' })
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+    }
+    
     setTimeout(() => setStatus('idle'), 4000)
   }
 

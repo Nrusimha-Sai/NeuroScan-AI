@@ -89,14 +89,14 @@ app = FastAPI(
 )
 
 # ── CORS ──────────────────────────────────────
-ALLOWED_ORIGINS = os.getenv(
-    "ALLOWED_ORIGINS",
-    "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,https://neuro-scan-ai.netlify.app",
-).split(",")
+ALLOWED_ORIGINS = [
+    "https://neuro-scan-ai.netlify.app",
+    "http://localhost:5173",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -251,6 +251,57 @@ async def predict(
         description       = description,
     )
 
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+from pydantic import BaseModel
+from fastapi import BackgroundTasks
+
+# ── Contact Form Model ────────────────────────
+class ContactForm(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str
+
+def send_contact_emails(data: ContactForm):
+    # Uses the provided credentials
+    sender_email = os.getenv("CONTACT_EMAIL", "saimahesh200509@gmail.com")
+    app_password = os.getenv("CONTACT_PASSWORD", "fxtl nocy kblz punv")
+
+    # 1. Email to Owner
+    msg_owner = MIMEMultipart()
+    msg_owner['From'] = sender_email
+    msg_owner['To'] = sender_email
+    msg_owner['Subject'] = f"New Contact Request: {data.subject}"
+    body_owner = f"Name: {data.name}\nEmail: {data.email}\nSubject: {data.subject}\n\nMessage:\n{data.message}"
+    msg_owner.attach(MIMEText(body_owner, 'plain'))
+
+    # 2. Email to User (Auto-reply)
+    msg_user = MIMEMultipart()
+    msg_user['From'] = sender_email
+    msg_user['To'] = data.email
+    msg_user['Subject'] = "NeuroScan AI - We received your message!"
+    body_user = f"Hi {data.name},\n\nThank you for reaching out to us. We have received your message regarding \"{data.subject}\" and will get back to you as soon as possible.\n\nHere is a copy of your message:\n--------------------------------------------------\n{data.message}\n--------------------------------------------------\n\nBest regards,\nThe NeuroScan AI Team"
+    msg_user.attach(MIMEText(body_user, 'plain'))
+
+    try:
+        # Connect to Gmail SMTP server
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender_email, app_password)
+            server.send_message(msg_owner)
+            server.send_message(msg_user)
+            logger.info("📧 Contact form emails sent successfully.")
+    except Exception as exc:
+        logger.error(f"Failed to send contact emails: {exc}")
+
+@app.post("/contact", summary="Submit Contact Form")
+async def contact_endpoint(form: ContactForm, background_tasks: BackgroundTasks):
+    # Queue email sending in the background to respond to the user immediately
+    background_tasks.add_task(send_contact_emails, form)
+    return {"status": "success", "message": "Message received, emails queued."}
 
 # ──────────────────────────────────────────────
 # Global exception handler
