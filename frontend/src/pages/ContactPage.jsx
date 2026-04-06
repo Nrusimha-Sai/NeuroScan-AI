@@ -63,15 +63,23 @@ export default function ContactPage() {
     setStatus('sending')
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+      const payload = {
+        ...form,
+        access_key: "bbdd45f3-539d-4927-a2ed-8a8a5e88c459",
+        from_name: "NeuroScan AI Contact Form"
+      };
+
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(payload)
       });
       
-      if (!response.ok) throw new Error('Failed to send');
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message || 'Failed to send');
       
       setStatus('success')
       setForm({ name: '', email: '', subject: '', message: '' })
