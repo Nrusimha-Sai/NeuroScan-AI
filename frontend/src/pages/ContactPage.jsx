@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, MessageSquare, MapPin, Send, CheckCircle2, AlertCircle, GitBranch, Globe, AtSign } from 'lucide-react'
 
@@ -52,44 +52,16 @@ function FAQItem({ q, a, index }) {
 }
 
 export default function ContactPage() {
-  const formRef = useRef(null)
-  const [status, setStatus] = useState('idle') // idle | sending | success | error
-  const [form, setForm]     = useState({ name: '', email: '', subject: '', message: '' })
+  const [status, setStatus] = useState('idle')
 
-  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setStatus('sending')
-    
-    try {
-      const formData = new FormData();
-      formData.append("access_key", "bbdd45f3-539d-4927-a2ed-8a8a5e88c459");
-      formData.append("name", form.name);
-      formData.append("email", form.email);
-      formData.append("subject", form.subject);
-      formData.append("message", form.message);
-      formData.append("from_name", "NeuroScan AI Contact Form");
-      formData.append("replyto", form.email);
-      formData.append("autoresponse", `Hi ${form.name},\n\nThank you for reaching out to us. We have received your message regarding "${form.subject}" and will get back to you as soon as possible.\n\nHere is a copy of your message:\n--------------------------------------------------\n${form.message}\n--------------------------------------------------\n\nBest regards,\nThe NeuroScan AI Team`);
-
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      });
-      
-      const result = await response.json();
-      if (!response.ok || !result.success) throw new Error(result.message || 'Failed to send');
-
+  useEffect(() => {
+    if (window.location.search.includes('success=true')) {
       setStatus('success')
-      setForm({ name: '', email: '', subject: '', message: '' })
-    } catch (err) {
-      console.error(err);
-      setStatus('error');
+      // Clean up the URL query parameter
+      window.history.replaceState(null, '', window.location.pathname)
+      setTimeout(() => setStatus('idle'), 4000)
     }
-    
-    setTimeout(() => setStatus('idle'), 4000)
-  }
+  }, [])
 
   return (
     <div className="min-h-screen pt-28 pb-20 particle-bg">
@@ -117,7 +89,13 @@ export default function ContactPage() {
           >
             <div className="glass rounded-3xl p-8 border border-white/08">
               <h2 className="font-display font-bold text-xl text-white mb-6">Send a Message</h2>
-              <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+              <form action="https://api.web3forms.com/submit" method="POST" className="space-y-4" onSubmit={() => setStatus('sending')}>
+                <input type="hidden" name="access_key" value="bbdd45f3-539d-4927-a2ed-8a8a5e88c459" />
+                <input type="hidden" name="from_name" value="NeuroScan AI Contact Form" />
+                {/* Dynamically construct redirect URL dynamically for netlify or localhost */}
+                <input type="hidden" name="redirect" value={typeof window !== 'undefined' ? `${window.location.origin}/contact?success=true` : 'https://neuroscan-ai.netlify.app/contact?success=true'} />
+                <input type="hidden" name="autoresponse" value="Hi there,&#10;&#10;Thank you for reaching out to us. We have received your message and will get back to you as soon as possible.&#10;&#10;Best regards,&#10;The NeuroScan AI Team" />
+                
                 <div className="grid sm:grid-cols-2 gap-4">
                   {['name', 'email'].map((field) => (
                     <div key={field}>
@@ -126,8 +104,6 @@ export default function ContactPage() {
                         type={field === 'email' ? 'email' : 'text'}
                         name={field}
                         required
-                        value={form[field]}
-                        onChange={handleChange}
                         placeholder={field === 'email' ? 'you@example.com' : 'Your name'}
                         className="w-full px-4 py-3 rounded-xl bg-white/05 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20 transition-all"
                       />
@@ -140,8 +116,6 @@ export default function ContactPage() {
                     type="text"
                     name="subject"
                     required
-                    value={form.subject}
-                    onChange={handleChange}
                     placeholder="How can we help?"
                     className="w-full px-4 py-3 rounded-xl bg-white/05 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20 transition-all"
                   />
@@ -152,8 +126,6 @@ export default function ContactPage() {
                     name="message"
                     required
                     rows={5}
-                    value={form.message}
-                    onChange={handleChange}
                     placeholder="Tell us more..."
                     className="w-full px-4 py-3 rounded-xl bg-white/05 border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20 transition-all resize-none"
                   />
