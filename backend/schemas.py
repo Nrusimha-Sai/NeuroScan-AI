@@ -16,3 +16,10 @@ class PredictionResponse(BaseModel):
 class ErrorResponse(BaseModel):
     detail: str
     error_code: str
+
+
+class ContactRequest(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str

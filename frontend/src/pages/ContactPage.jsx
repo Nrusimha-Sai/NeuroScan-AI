@@ -54,14 +54,50 @@ function FAQItem({ q, a, index }) {
 export default function ContactPage() {
   const [status, setStatus] = useState('idle')
 
-  useEffect(() => {
-    if (window.location.search.includes('success=true')) {
-      setStatus('success')
-      // Clean up the URL query parameter
-      window.history.replaceState(null, '', window.location.pathname)
-      setTimeout(() => setStatus('idle'), 4000)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    const form = e.target;
+    // Check form validity
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        setStatus('idle');
+        return;
     }
-  }, [])
+    
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      subject: formData.get('subject'),
+      message: formData.get('message'),
+    };
+    
+    try {
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE}/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setStatus('success');
+        form.reset();
+        setTimeout(() => setStatus('idle'), 4000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 4000);
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 4000);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-28 pb-20 particle-bg">
@@ -89,12 +125,7 @@ export default function ContactPage() {
           >
             <div className="glass rounded-3xl p-8 border border-white/08">
               <h2 className="font-display font-bold text-xl text-white mb-6">Send a Message</h2>
-              <form action="https://api.web3forms.com/submit" method="POST" className="space-y-4" onSubmit={() => setStatus('sending')}>
-                <input type="hidden" name="access_key" value="bbdd45f3-539d-4927-a2ed-8a8a5e88c459" />
-                <input type="hidden" name="from_name" value="NeuroScan AI Contact Form" />
-                {/* Dynamically construct redirect URL dynamically for netlify or localhost */}
-                <input type="hidden" name="redirect" value={typeof window !== 'undefined' ? `${window.location.origin}/contact?success=true` : 'https://neuroscan-ai.netlify.app/contact?success=true'} />
-                <input type="hidden" name="autoresponse" value="Hi there,&#10;&#10;Thank you for reaching out to us. We have received your message and will get back to you as soon as possible.&#10;&#10;Best regards,&#10;The NeuroScan AI Team" />
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 
                 <div className="grid sm:grid-cols-2 gap-4">
                   {['name', 'email'].map((field) => (

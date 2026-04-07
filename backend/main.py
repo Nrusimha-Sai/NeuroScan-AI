@@ -32,7 +32,10 @@ from model_utils import (
     read_image_from_bytes,
     run_inference,
 )
-from schemas import ErrorResponse, PredictionResponse
+from schemas import ErrorResponse, PredictionResponse, ContactRequest
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # ──────────────────────────────────────────────
 # Logging
@@ -133,6 +136,43 @@ async def root():
         "message": "Brain MRI Tumor Detection API is running 🧠",
         "docs": "/docs",
     }
+
+
+@app.post("/contact", summary="Submit contact form")
+async def contact_form(request: ContactRequest):
+    sender_email = "saimahesh200509@gmail.com"
+    app_password = "fxtl nocy kblz punv"
+
+    try:
+        # Send message to site owner
+        msg_owner = MIMEMultipart()
+        msg_owner['From'] = sender_email
+        msg_owner['To'] = sender_email
+        msg_owner['Reply-To'] = request.email
+        msg_owner['Subject'] = f"New Contact: {request.subject}"
+        body_owner = f"Name: {request.name}\nEmail: {request.email}\nSubject: {request.subject}\n\nMessage:\n{request.message}"
+        msg_owner.attach(MIMEText(body_owner, 'plain'))
+
+        # Send autoresponse to the user
+        msg_user = MIMEMultipart()
+        msg_user['From'] = sender_email
+        msg_user['To'] = request.email
+        msg_user['Subject'] = "Re: " + request.subject
+        body_user = f"Hi {request.name},\n\nThank you for reaching out to us. We have received your message and will get back to you as soon as possible.\n\nBest regards,\nThe NeuroScan AI Team"
+        msg_user.attach(MIMEText(body_user, 'plain'))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
+            server.login(sender_email, app_password)
+            server.send_message(msg_owner)
+            server.send_message(msg_user)
+
+        return {"success": True, "message": "Email sent successfully"}
+    except Exception as exc:
+        logger.error(f"Failed to send email: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to send email"
+        )
 
 
 @app.get("/health", summary="Detailed health check")
