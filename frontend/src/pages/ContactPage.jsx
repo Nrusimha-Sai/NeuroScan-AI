@@ -76,7 +76,9 @@ export default function ContactPage() {
     
     try {
       const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${API_BASE}/contact`, {
+      const endpoint = import.meta.env.PROD ? '/.netlify/functions/contact' : `${API_BASE}/contact`;
+      
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
