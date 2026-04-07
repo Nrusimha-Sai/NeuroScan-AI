@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, MessageSquare, MapPin, Send, CheckCircle2, AlertCircle, GitBranch, Globe, AtSign } from 'lucide-react'
-import { sendContactForm } from '../utils/api'
 
 const contactInfo = [
   { icon: Mail,        label: 'Email',    value: 'gmail',    href: 'mailto:saimahesh200505@gmail.com' },
@@ -64,7 +63,24 @@ export default function ContactPage() {
     setStatus('sending')
     
     try {
-      await sendContactForm(form);
+      const formData = new FormData();
+      formData.append("access_key", "bbdd45f3-539d-4927-a2ed-8a8a5e88c459");
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("subject", form.subject);
+      formData.append("message", form.message);
+      formData.append("from_name", "NeuroScan AI Contact Form");
+      formData.append("replyto", form.email);
+      formData.append("autoresponse", `Hi ${form.name},\n\nThank you for reaching out to us. We have received your message regarding "${form.subject}" and will get back to you as soon as possible.\n\nHere is a copy of your message:\n--------------------------------------------------\n${form.message}\n--------------------------------------------------\n\nBest regards,\nThe NeuroScan AI Team`);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message || 'Failed to send');
+
       setStatus('success')
       setForm({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
