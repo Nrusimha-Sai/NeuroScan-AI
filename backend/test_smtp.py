@@ -2,8 +2,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-sender_email = "saimahesh200509@gmail.com"
-app_password = "fxtl nocy kblz punv"
+sender_email = "support.neuroscan.ai@gmail.com"
+app_password = "lbgl hhgl apkf bdbg"
 
 msg_owner = MIMEMultipart()
 msg_owner['From'] = sender_email
