@@ -32,7 +32,8 @@ from model_utils import (
     read_image_from_bytes,
     run_inference,
 )
-from schemas import ErrorResponse, PredictionResponse
+from schemas import ErrorResponse, PredictionResponse, ContactRequest, ContactResponse
+from email_service import send_contact_emails
 
 # ──────────────────────────────────────────────
 # Logging
@@ -250,6 +251,28 @@ async def predict(
         severity          = severity,
         description       = description,
     )
+
+@app.post(
+    "/contact",
+    response_model=ContactResponse,
+    summary="Send a contact form message",
+    description="Sends an email to the admin and an autoresponse to the user submitting the form."
+)
+async def contact(payload: ContactRequest):
+    try:
+        send_contact_emails(
+            name=payload.name,
+            email=payload.email,
+            subject=payload.subject,
+            message=payload.message
+        )
+        return ContactResponse(success=True, message="Emails sent successfully.")
+    except Exception as exc:
+        logger.error(f"Failed to process contact request: {exc}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to send email. Please try again later."
+        )
 
 # ──────────────────────────────────────────────
 # Global exception handler

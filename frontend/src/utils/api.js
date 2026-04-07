@@ -32,4 +32,14 @@ export async function getHealth() {
   return response.data
 }
 
+/**
+ * POST /contact
+ * @param {Object} payload 
+ * @returns {Promise<ContactResponse>}
+ */
+export async function sendContactForm(payload) {
+  const response = await apiClient.post('/contact', payload)
+  return response.data
+}
+
 export default apiClient
