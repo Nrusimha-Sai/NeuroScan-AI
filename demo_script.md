@@ -1,79 +1,70 @@
-# NeuroScan AI: Final Demonstration Script
+# NeuroScan AI: Final Demonstration Script (Deep Learning Focus)
 
-## Team Role Division
+## Team Role Division: ML & Deep Learning Specialization
 | Name | Role | Responsibility |
 | :--- | :--- | :--- |
-| **Nrusimha Sai** | Team Lead | Introduction, Vision, Problem Statement, Future Scope, and Conclusion. |
-| **Srinivas** | ML Engineer | Technical Architecture, Model Training, Grad-CAM (Explainability), and API logic. |
-| **Durga** | UI/UX Developer | Frontend framework choice, Design system, Responsive UI, and Component structure. |
-| **Roshini** | Product Presenter | Live Demo Walkthrough, User Flow, Validation, and Feature Highlights. |
+| **Nrusimha Sai** | Team Lead | Dataset Curation, Multi-class Brain Tumor Classification Logic, and Project Vision. |
+| **Srinivas** | ML Specialist | Architecture Selection (DenseNet-121), Hyperparameter Tuning, and Optimization Strategy. |
+| **Durga** | Vision Engineer | Data Augmentation, Preprocessing Pipeline, and Normalization consistent with ImageNet standards. |
+| **Roshini** | Explainable AI (XAI) | Grad-CAM Implementation, Model Interpretability, and Live Inference Demonstration. |
 
 ---
 
 ## The Script
 
-### 1. Introduction (Nrusimha Sai)
-**[Starting the presentation - Hero Section Visible]**
+### 1. Introduction & Dataset (Nrusimha Sai)
+**[Starting the presentation - Dataset/Sample Images Visible]**
 
-"Good morning/afternoon everyone. I am Nrusimha Sai, the Team Lead for **NeuroScan AI**.
+"Good morning everyone. I am Nrusimha Sai, the Team Lead for **NeuroScan AI**.
 
-Every year, millions of people are diagnosed with brain abnormalities. For radiologists, analyzing hundreds of MRI slices daily is an exhausting and high-stakes task. A slight oversight can lead to a late diagnosis.
+Our project addresses a critical bottleneck in oncology: the rapid classification of Brain MRI scans. We focused our research on a multi-class classification problem, targeting four distinct categories: **Glioma, Meningioma, Pituitary tumor,** and **Normal (No-tumor)** scans.
 
-This is why we built **NeuroScan AI**. Our vision is to empower medical professionals with an AI-driven second opinion that is not just fast and accurate, but also **explainable**. We don't just tell you there is a tumor; we show you exactly where the AI sees it."
-
----
-
-### 2. Technical Architecture (Srinivas)
-**[Transition: Switching to slides showing the Architecture diagram]**
-
-"Thank you, Nrusimha. I’m Srinivas, and I handled the backend and machine learning side of the project.
-
-Our system is built on a high-performance **FastAPI** backend that serves a deep learning model developed in **PyTorch**. We utilized a Convolutional Neural Network (CNN) specifically tuned for medical imaging.
-
-One of the biggest challenges in medical AI is the 'Black Box' problem—doctors often find it hard to trust a score without knowing why it was given. To solve this, we implemented **Grad-CAM**. This technique calculates the gradients of the target class and maps them back to the image, creating a heatmap that highlights the pathological regions. Our API handles image preprocessing, real-time inference, and heatmap generation in under 2 seconds."
+The dataset we curated consists of over 3000 high-resolution MRI images. The challenge wasn't just in the classification but in ensuring the model handles the subtle textual variances between different tumor types while maintaining a high clinical sensitivity. We designed this project as a digital assistant that provides not just a label, but a justified diagnosis based on deep feature extraction."
 
 ---
 
-### 3. Frontend & Design (Durga)
-**[Transition: Navigating through the UI features]**
+### 2. Model Architecture & Training (Srinivas)
+**[Transition: Switching to slides showing the DenseNet blocks and Training Graphs]**
 
-"I’m Durga, and I was responsible for the user interface and experience.
+"Thank you, Nrusimha. I’m Srinivas, and I led the model development and training phase.
 
-For a medical tool, clarity and ease of use are paramount. We built the frontend using **React.js** with a sleek, dark-themed **Tailwind CSS** design to reduce eye strain for clinicians.
+After experimenting with various architectures like ResNet and EfficientNet, we selected **DenseNet-121** as our backbone. DenseNet’s dense connectivity pattern—where each layer connects to every other layer in a feed-forward fashion—is particularly effective for medical images because it encourages feature reuse and mitigates the vanishing-gradient problem.
 
-We used **Framer Motion** for smooth transitions and **React-Dropzone** for a seamless file upload experience. The interface is fully responsive, meaning a doctor could potentially review a result on a tablet during rounds as easily as on a workstation. We also integrated a **Backend Health Check** system that ensures the model is loaded and ready before the user even starts uploading."
-
----
-
-### 4. Live Demonstration (Roshini)
-**[Transition: Sharing the screen with the live application]**
-
-"Thank you, Durga. Now, let’s see NeuroScan AI in action. I am Roshini.
-
-Starting from our **Hero Section**, we see a clear call to action. As I scroll down, we reach the **Upload Zone**. I will now upload a sample MRI scan.
-
-**[Action: Upload an image]**
-
-As you can see, the system provides real-time feedback with a loading animation as the backend processes the image.
-
-**[Action: Scroll to Result Card]**
-
-The analysis is complete!
-- Here, we see the **Prediction**: In this case, 'Meningioma'.
-- The **Confidence Bar** shows a 98% probability.
-- Most importantly, if I click 'View Heatmap', we see the **Grad-CAM overlay**. Notice how the AI has highlighted the exact region of the tumor, matching what a radiologist would look for.
-
-We also have a contact support system where users can send inquiries, which triggers an automated email notification sequence to our team and the user."
+We utilized **Transfer Learning**, initializing the backbone with weights pre-trained on ImageNet and freezing the feature extraction layers to preserve low-level spatial features. We then replaced the classifier head with a custom linear layer mapped to our 4 target classes. For optimization, we used the **Adam optimizer** with a fine-tuned learning rate and **Cross-Entropy Loss**, achieving a validation accuracy of over 94% through rigorous epoch-based training."
 
 ---
 
-### 5. Closing & Future Scope (Nrusimha Sai)
-**[Transition: Future Scope Slide]**
+### 3. Data Augmentation & Preprocessing (Durga)
+**[Transition: Showing Before/After of Preprocessing and Augmentation]**
 
-"To wrap up, NeuroScan AI is just the beginning.
+"I’m Durga, and I engineered the preprocessing pipeline that feeds our model.
 
-In the future, we plan to support **3D DICOM** files for full-volume scans and integrate **Segmentational Masks** for exact tumor volume calculation. We are also looking into mobile integration to make this intelligence accessible everywhere.
+Raw MRI scans come in various dimensions and lighting conditions. To ensure model robustness and prevent overfitting, I implemented a comprehensive **Data Augmentation** strategy using Torchvision. This includes 50% probability horizontal flips, subtle rotations of up to 10 degrees, and random affine transformations for slight shifts and zooms.
 
-We are now open for any questions. Thank you for your time."
+Every image is resized to **224x224** and normalized using the specific mean and standard deviation of the ImageNet dataset `[0.485, 0.456, 0.406]`. This alignment is crucial for our pre-trained DenseNet backbone to maintain the internal feature hierarchy learned during its initial training."
+
+---
+
+### 4. Explainable AI & Live Demo (Roshini)
+**[Transition: Sharing the screen with the live application and Heatmap view]**
+
+"Thank you, Durga. I am Roshini, and I focused on making the model 'interpretable' or transparent.
+
+In medical AI, trust is everything. To bridge the gap between AI and clinical practice, I implemented **Grad-CAM** (Gradient-weighted Class Activation Mapping). This technique uses the gradients of any target concept flowing into the final convolutional layer of our DenseNet model to produce a coarse localization map.
+
+**[Action: Uploading a Meningioma MRI scan]**
+
+Let’s look at the live results. As the image passes through our inference pipeline, the model identifies it as a 'Meningioma' with high confidence. But notice what happens when I enable the **Heatmap**. The model highlights the exact cluster of pixels corresponding to the tumor mass. This allows the radiologist to immediately verify if the AI is looking at the correct anatomical region, effectively turning a 'Black Box' model into a transparent diagnostic tool."
+
+---
+
+### 5. Conclusion & Future Scope (Nrusimha Sai)
+**[Transition: Future DL Enhancements Slide]**
+
+"To wrap up, NeuroScan AI demonstrates how advanced Deep Learning architectures like DenseNet-121 can be adapted for specialized medical tasks.
+
+Our future work involves moving from 2D slices to **3D Volumetric Segmentation** using U-Net architectures and exploring **Ensemble methods** to push our accuracy closer to 99%.
+
+We are now open for your technical questions regarding our model's performance and architecture. Thank you."
 
 ---

@@ -15,6 +15,7 @@ import AboutPage      from './pages/AboutPage'
 import ContactPage    from './pages/ContactPage'
 import PrivacyPage    from './pages/PrivacyPage'
 import TermsPage      from './pages/TermsPage'
+import ArchitecturePage from './pages/ArchitecturePage'
 
 /* Page transition wrapper */
 function PageTransition({ children }) {
@@ -43,6 +44,7 @@ function AnimatedRoutes() {
         <Route path="/contact"     element={<PageTransition><ContactPage /></PageTransition>} />
         <Route path="/privacy"     element={<PageTransition><PrivacyPage /></PageTransition>} />
         <Route path="/terms"       element={<PageTransition><TermsPage /></PageTransition>} />
+        <Route path="/architecture" element={<PageTransition><ArchitecturePage /></PageTransition>} />
         {/* 404 */}
         <Route path="*" element={
           <PageTransition>

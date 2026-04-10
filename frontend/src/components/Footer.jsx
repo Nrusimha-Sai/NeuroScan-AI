@@ -8,6 +8,7 @@ const footerLinks = {
   Product: [
     { label: 'Analyze MRI',   to: '/analyze' },
     { label: 'How It Works',  to: '/how-it-works' },
+    { label: 'Model Architecture', to: '/architecture' },
     { label: 'API Docs',      to: `${API_BASE}/docs`, external: true },
   ],
   Company: [

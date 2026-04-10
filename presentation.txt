@@ -1,52 +1,56 @@
-# PRESENTATION OUTLINE: NeuroScan AI
+# PRESENTATION OUTLINE: NeuroScan AI (Deep Learning Focus)
 
 ## Slide 1: Title Slide
 - Project Name: NeuroScan AI
-- Subtitle: Advanced Brain MRI Analysis using Explainable AI
-- Team Members:
-    1. Nrusimha Sai (Team Lead)
-    2. Srinivas
-    3. Durga
-    4. Roshini
+- Subtitle: Advanced Brain MRI Classification via DenseNet-121 & Grad-CAM
+- Team & DL Roles:
+    1. Nrusimha Sai (Dataset & Logic)
+    2. Srinivas (Architecture & Training)
+    3. Durga (Preprocessing & Augmentation)
+    4. Roshini (Interpretability & Demo)
 
-## Slide 2: Problem Statement
-- Brain tumors are critical medical conditions requiring early and accurate diagnosis.
-- Manual inspection of MRI scans is time-consuming and prone to human error.
-- Need for a fast, reliable, and interpretable AI tool for radiologists and doctors.
+## Slide 2: The Problem (Clinical Context)
+- Need for automated multi-class MRI classification.
+- Targeting: Glioma, Meningioma, Pituitary, and No-Tumor.
+- Bridging the Gap: Moving from simple labels to "Explainable AI."
 
-## Slide 3: Our Solution
-- NeuroScan AI: A web-based platform for automated tumor detection.
-- High-accuracy classification.
-- Inclusion of Explainable AI (Grad-CAM) to provide visual justification for AI decisions.
+## Slide 3: Dataset Summary
+- Total Images: ~3000+ MRI Scans.
+- Format: High-res JPEG/PNG standard.
+- Balanced across 4 classes for unbiased training.
 
-## Slide 4: Tech Stack
-- Frontend: React.js, Tailwind CSS, Framer Motion (for animations).
-- Backend: FastAPI, Python.
-- Deep Learning: PyTorch, Torchvision (CNN Architecture).
-- Deployment: Netlify (Frontend), Render/AWS (Backend).
+## Slide 4: Deep Learning Architecture
+- Backbone: **DenseNet-121**.
+- Why DenseNet? Feature reuse, efficient parameter usage, and vanishing gradient prevention.
+- Strategy: **Transfer Learning** (Pre-trained on ImageNet).
+- Output Layer: Custom 4-way Linear Classifier.
 
-## Slide 5: Technical Implementation (AI & ML)
-- Dataset: Curated Brain MRI Dataset.
-- Model Architecture: Custom CNN/Transfer Learning.
-- Explainability: Grad-CAM (Gradient-weighted Class Activation Mapping) which highlights relevant regions in the MRI scan.
+## Slide 5: Training Pipeline
+- Loss Function: **CrossEntropyLoss**.
+- Optimizer: **Adam**.
+- Hyperparameters: Finetuned Learning Rate (LR), Batch Size (BS).
+- Validation Accuracy Metrics: Over 94%.
 
-## Slide 6: System Architecture
-- Client (React) -> Image Upload -> API (FastAPI) -> Model Inference -> Result + Heatmap -> Client Display.
-- Email Notification: Automated receipt and inquiry handling via SMTP.
+## Slide 6: Vision Engineering (Preprocessing)
+- Standardization: Resize (224x224).
+- Normalization: Z-score scaling based on ImageNet stats.
+- **Robust Augmentations**: Horizontal flips, Random rotations (10°), Color Jitter, and Affine shifts.
 
-## Slide 7: Live Demonstration
-- UI Tour (Hero Section).
-- Real-time Upload functionality.
-- Analysis Result: Confidence scores and Heatmap viewing.
-- Contact Form & Support System.
+## Slide 7: Explainable AI (XAI)
+- Technique: **Grad-CAM**.
+- Mechanism: Gradient flow into the last Conv layer.
+- Clinical Value: Visual verification of pathological regions (Heatmaps).
 
-## Slide 8: Future Enhancements
-- 3D MRI support (DICOM format).
-- Multi-language support.
-- Mobile application for remote diagnostics.
-- Integration with Hospital Management Systems (HMS).
+## Slide 8: Live Technical Demo
+- Real-time Classification of various tumor types.
+- Heatmap overlay visualization.
+- Confidence score analysis per class.
 
-## Slide 9: Conclusion
-- NeuroScan AI bridge the gap between AI technology and clinical diagnostics.
-- Empowering medical professionals with digital assistants.
-- Q&A Section.
+## Slide 9: Future Technical Scope
+- 3D UNet for segmentation.
+- Transformer-based architectures (ViT).
+- Mobile-inference (Quantization).
+
+## Slide 10: Conclusion
+- Empowering Radiologists with Deep Learning.
+- Q&A Session focusing on Model Weights and Gradients.
