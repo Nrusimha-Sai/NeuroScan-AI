@@ -1,0 +1,52 @@
+# PRESENTATION OUTLINE: NeuroScan AI
+
+## Slide 1: Title Slide
+- Project Name: NeuroScan AI
+- Subtitle: Advanced Brain MRI Analysis using Explainable AI
+- Team Members:
+    1. Nrusimha Sai (Team Lead)
+    2. Srinivas
+    3. Durga
+    4. Roshini
+
+## Slide 2: Problem Statement
+- Brain tumors are critical medical conditions requiring early and accurate diagnosis.
+- Manual inspection of MRI scans is time-consuming and prone to human error.
+- Need for a fast, reliable, and interpretable AI tool for radiologists and doctors.
+
+## Slide 3: Our Solution
+- NeuroScan AI: A web-based platform for automated tumor detection.
+- High-accuracy classification.
+- Inclusion of Explainable AI (Grad-CAM) to provide visual justification for AI decisions.
+
+## Slide 4: Tech Stack
+- Frontend: React.js, Tailwind CSS, Framer Motion (for animations).
+- Backend: FastAPI, Python.
+- Deep Learning: PyTorch, Torchvision (CNN Architecture).
+- Deployment: Netlify (Frontend), Render/AWS (Backend).
+
+## Slide 5: Technical Implementation (AI & ML)
+- Dataset: Curated Brain MRI Dataset.
+- Model Architecture: Custom CNN/Transfer Learning.
+- Explainability: Grad-CAM (Gradient-weighted Class Activation Mapping) which highlights relevant regions in the MRI scan.
+
+## Slide 6: System Architecture
+- Client (React) -> Image Upload -> API (FastAPI) -> Model Inference -> Result + Heatmap -> Client Display.
+- Email Notification: Automated receipt and inquiry handling via SMTP.
+
+## Slide 7: Live Demonstration
+- UI Tour (Hero Section).
+- Real-time Upload functionality.
+- Analysis Result: Confidence scores and Heatmap viewing.
+- Contact Form & Support System.
+
+## Slide 8: Future Enhancements
+- 3D MRI support (DICOM format).
+- Multi-language support.
+- Mobile application for remote diagnostics.
+- Integration with Hospital Management Systems (HMS).
+
+## Slide 9: Conclusion
+- NeuroScan AI bridge the gap between AI technology and clinical diagnostics.
+- Empowering medical professionals with digital assistants.
+- Q&A Section.
